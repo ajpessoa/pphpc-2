@@ -21,12 +21,20 @@
 	<!-- Dependencies -->
 	<property name="jcommander.ver" value="1.47"/>
 	<property name="uncommons-maths.ver" value="1.2.3"/>
+	<property name="commons-rng.ver" value="1.5"/>
+	<property name="BetterRandom.ver" value="5.6.2"/>
+	<property name="prngine.ver" value="2.0.0"/>
 
 	<!-- Classpath -->
 	<path id="pphpc-java.classpath">
 		<pathelement location="${bin.dir}"/>
 		<pathelement location="${lib.dir}/jcommander-${jcommander.ver}.jar"/>
 		<pathelement location="${lib.dir}/uncommons-maths-${uncommons-maths.ver}.jar"/>
+		<pathelement location="${lib.dir}/commons-rng-client-api-${commons-rng.ver}.jar"/>
+		<pathelement location="${lib.dir}/commons-rng-simple-${commons-rng.ver}.jar"/>
+		<pathelement location="${lib.dir}/commons-rng-core-${commons-rng.ver}.jar"/>
+		<pathelement location="${lib.dir}/BetterRandom-${BetterRandom.ver}.jar"/>
+		<pathelement location="${lib.dir}/prngine-${prngine.ver}.jar"/>
 	</path>
 	
 	<!-- Build source code -->
@@ -75,10 +83,25 @@
 	
 	<!-- Get dependencies -->
 	<target name="get-libs">
-		<get src="http://central.maven.org/maven2/com/beust/jcommander/${jcommander.ver}/jcommander-${jcommander.ver}.jar"
+		<get src="https://repo.maven.apache.org/maven2/com/beust/jcommander/${jcommander.ver}/jcommander-${jcommander.ver}.jar"
 			dest="${lib.dir}/jcommander-${jcommander.ver}.jar" skipexisting="true"/>
-		<get src="http://central.maven.org/maven2/io/gatling/uncommons/maths/uncommons-maths/${uncommons-maths.ver}/uncommons-maths-${uncommons-maths.ver}.jar"
+		<get src="https://repo.maven.apache.org/maven2/io/gatling/uncommons/maths/uncommons-maths/${uncommons-maths.ver}/uncommons-maths-${uncommons-maths.ver}.jar"
 			dest="${lib.dir}/uncommons-maths-${uncommons-maths.ver}.jar" skipexisting="true"/>
+			
+		<get src="https://repo.maven.apache.org/maven2/org/apache/commons/commons-rng-client-api/${commons-rng.ver}/commons-rng-client-api-${commons-rng.ver}.jar"
+			dest="${lib.dir}/commons-rng-client-api-${commons-rng.ver}.jar" skipexisting="true"/>
+			
+		<get src="https://repo.maven.apache.org/maven2/org/apache/commons/commons-rng-simple/${commons-rng.ver}/commons-rng-simple-${commons-rng.ver}.jar"
+			dest="${lib.dir}/commons-rng-simple-${commons-rng.ver}.jar" skipexisting="true"/>
+			
+		<get src="https://repo.maven.apache.org/maven2/org/apache/commons/commons-rng-core/${commons-rng.ver}/commons-rng-core-${commons-rng.ver}.jar"
+			dest="${lib.dir}/commons-rng-core-${commons-rng.ver}.jar" skipexisting="true"/>
+			
+		<get src="https://repo.maven.apache.org/maven2/io/github/pr0methean/betterrandom/BetterRandom/${BetterRandom.ver}/BetterRandom-${BetterRandom.ver}.jar"
+			dest="${lib.dir}/BetterRandom-${BetterRandom.ver}.jar" skipexisting="true"/>
+			
+		<get src="https://repo.maven.apache.org/maven2/io/jenetics/prngine/${prngine.ver}/prngine-${prngine.ver}.jar"
+			dest="${lib.dir}/prngine-${prngine.ver}.jar" skipexisting="true"/>
 	</target>
 
 </project>
