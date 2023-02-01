@@ -9,3 +9,4 @@ doc/
 stats*.txt
 *.log
 *.jar
+java/src/org/module-info.java

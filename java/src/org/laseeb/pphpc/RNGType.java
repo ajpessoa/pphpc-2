@@ -26,6 +26,7 @@
 
 package org.laseeb.pphpc;
 
+import java.math.BigInteger;
 import java.util.Random;
 
 import org.uncommons.maths.random.AESCounterRNG;
@@ -35,6 +36,14 @@ import org.uncommons.maths.random.JavaRNG;
 import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.maths.random.SeedGenerator;
 import org.uncommons.maths.random.XORShiftRNG;
+
+import io.github.pr0methean.betterrandom.prng.AesCounterRandom;
+import io.github.pr0methean.betterrandom.prng.Cmwc4096Random;
+import io.github.pr0methean.betterrandom.prng.MersenneTwisterRandom;
+import io.github.pr0methean.betterrandom.prng.Pcg128Random;
+import io.github.pr0methean.betterrandom.prng.Pcg64Random;
+import io.github.pr0methean.betterrandom.prng.XorShiftRandom;
+import io.github.pr0methean.betterrandom.seed.*;
 
 /**
  * Enum representing the random number generators present in the Uncommons
@@ -47,57 +56,113 @@ public enum RNGType {
 	/** @see org.uncommons.maths.random.AESCounterRNG */
 	AES {
 		@Override
-		public Random createRNG(SeedGenerator seedGen) throws Exception {
+		public Random createRNG(int modifier, BigInteger seed) throws Exception {
+			SeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
 			return new AESCounterRNG(seedGen);
 		}
 	},
 	/** @see org.uncommons.maths.random.CellularAutomatonRNG */
 	CA {
 		@Override
-		public Random createRNG(SeedGenerator seedGen) throws Exception {
+		public Random createRNG(int modifier, BigInteger seed) throws Exception {
+			SeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
 			return new CellularAutomatonRNG(seedGen);
 		}
 	}, 
 	/** @see org.uncommons.maths.random.CMWC4096RNG */
 	CMWC {
 		@Override
-		public Random createRNG(SeedGenerator seedGen) throws Exception {
+		public Random createRNG(int modifier, BigInteger seed) throws Exception {
+			SeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
 			return new CMWC4096RNG(seedGen);
 		}
 	}, 
 	/** @see org.uncommons.maths.random.JavaRNG */
 	JAVA {
 		@Override
-		public Random createRNG(SeedGenerator seedGen) throws Exception {
+		public Random createRNG(int modifier, BigInteger seed) throws Exception {
+			SeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
 			return new JavaRNG(seedGen);
 		}
 	}, 
 	/** @see org.uncommons.maths.random.MersenneTwisterRNG */
 	MT {
 		@Override
-		public Random createRNG(SeedGenerator seedGen) throws Exception {
+		public Random createRNG(int modifier, BigInteger seed) throws Exception {
+			SeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
 			return new MersenneTwisterRNG(seedGen);
 		}
 	},
 	/** @see RanduRNG */
 	RANDU {
 		@Override
-		public Random createRNG(SeedGenerator seedGen) throws Exception {
+		public Random createRNG(int modifier, BigInteger seed) throws Exception {
+			SeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
 			return new RanduRNG(seedGen);
 		}
 	},
 	/** @see ModMidSquareRNG */
 	MODMIDSQUARE {
 		@Override
-		public Random createRNG(SeedGenerator seedGen) throws Exception {
+		public Random createRNG(int modifier, BigInteger seed) throws Exception {
+			SeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
 			return new ModMidSquareRNG(seedGen);
 		}
 	},
 	/** @see org.uncommons.maths.random.XORShiftRNG */
 	XORSHIFT {
 		@Override
-		public Random createRNG(SeedGenerator seedGen) throws Exception {
+		public Random createRNG(int modifier, BigInteger seed) throws Exception {
+			SeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
 			return new XORShiftRNG(seedGen);
+		}
+	},
+	/** @see io.github.pr0methean.betterrandom.prng.AesCounterRandom */
+	BETTERAES {
+		@Override
+		public Random createRNG(int modifier, BigInteger seed) throws Exception {
+			io.github.pr0methean.betterrandom.seed.SeedGenerator seedGen = new BetterModelSeedGenerator(modifier, seed);
+			return new AesCounterRandom(seedGen);
+		}
+	},
+	/** @see io.github.pr0methean.betterrandom.prng.Cmwc4096Random */
+	BETTERCMWC {
+		@Override
+		public Random createRNG(int modifier, BigInteger seed) throws Exception {
+			io.github.pr0methean.betterrandom.seed.SeedGenerator seedGen = new BetterModelSeedGenerator(modifier, seed);
+			return new Cmwc4096Random(seedGen);
+		}
+	},
+	/** @see io.github.pr0methean.betterrandom.prng.MersenneTwisterRandom */
+	BETTERMT {
+		@Override
+		public Random createRNG(int modifier, BigInteger seed) throws Exception {
+			io.github.pr0methean.betterrandom.seed.SeedGenerator seedGen = new BetterModelSeedGenerator(modifier, seed);
+			return new MersenneTwisterRandom(seedGen);
+		}
+	},
+	/** @see io.github.pr0methean.betterrandom.prng.Pcg128Random */
+	PCG128 {
+		@Override
+		public Random createRNG(int modifier, BigInteger seed) throws Exception {
+			io.github.pr0methean.betterrandom.seed.SeedGenerator seedGen = new BetterModelSeedGenerator(modifier, seed);
+			return new Pcg128Random(seedGen);
+		}
+	},
+	/** @see io.github.pr0methean.betterrandom.prng.Pcg64Random */
+	PCG64 {
+		@Override
+		public Random createRNG(int modifier, BigInteger seed) throws Exception {
+			io.github.pr0methean.betterrandom.seed.SeedGenerator seedGen = new BetterModelSeedGenerator(modifier, seed);
+			return new Pcg64Random(seedGen);
+		}
+	},
+	/** @see io.github.pr0methean.betterrandom.prng.XorShiftRandom */
+	BETTERXOR {
+		@Override
+		public Random createRNG(int modifier, BigInteger seed) throws Exception {
+			io.github.pr0methean.betterrandom.seed.SeedGenerator seedGen = new BetterModelSeedGenerator(modifier, seed);
+			return new XorShiftRandom(seedGen);
 		}
 	};
 	
@@ -108,6 +173,6 @@ public enum RNGType {
 	 * @return A random number generator associated with this RNG type.
 	 * @throws Exception If some problem occurs while creating the RNG.
 	 */
-	public abstract Random createRNG(SeedGenerator seedGen) throws Exception;
+	public abstract Random createRNG(int modifier, BigInteger seed) throws Exception;
 
 }
