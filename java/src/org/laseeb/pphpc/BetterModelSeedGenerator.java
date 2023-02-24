@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, 2015, Nuno Fachada
+ * Copyright (c) 2014, 2015, Nuno Fachada, Ana Pinha
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -43,6 +43,7 @@ import io.github.pr0methean.betterrandom.seed.SeedException;
  * pseudo-random numbers.
  * 
  * @author Nuno Fachada
+ * @author Ana Pinha
  */
 public class BetterModelSeedGenerator implements SeedGenerator {
 	
