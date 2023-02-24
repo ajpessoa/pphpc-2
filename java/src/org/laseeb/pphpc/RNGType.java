@@ -43,7 +43,17 @@ import io.github.pr0methean.betterrandom.prng.MersenneTwisterRandom;
 import io.github.pr0methean.betterrandom.prng.Pcg128Random;
 import io.github.pr0methean.betterrandom.prng.Pcg64Random;
 import io.github.pr0methean.betterrandom.prng.XorShiftRandom;
-import io.github.pr0methean.betterrandom.seed.*;
+
+import io.jenetics.prngine.KISS64Random;
+import io.jenetics.prngine.LCG64ShiftRandom;
+import io.jenetics.prngine.MT19937_64Random;
+import io.jenetics.prngine.XOR64ShiftRandom;
+import io.jenetics.prngine.Seeds;
+
+import org.apache.commons.rng.simple.JDKRandomBridge;
+import org.apache.commons.rng.simple.RandomSource;
+import org.apache.commons.rng.simple.internal.*;
+
 
 /**
  * Enum representing the random number generators present in the Uncommons
@@ -163,6 +173,35 @@ public enum RNGType {
 		public Random createRNG(int modifier, BigInteger seed) throws Exception {
 			io.github.pr0methean.betterrandom.seed.SeedGenerator seedGen = new BetterModelSeedGenerator(modifier, seed);
 			return new XorShiftRandom(seedGen);
+		}
+	},
+	PRNGKISS{
+		@Override
+		public Random createRNG(int modifier, BigInteger seed) throws Exception {
+			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
+			return new PrngineRandomWrapper(new KISS64Random(), seedGen);
+			
+		}
+	},
+	PRNGLCG{
+		@Override
+		public Random createRNG(int modifier, BigInteger seed) throws Exception {
+			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
+			return new PrngineRandomWrapper(new LCG64ShiftRandom(), seedGen);
+		}
+	},
+	PRNGMT{
+		@Override
+		public Random createRNG(int modifier, BigInteger seed) throws Exception {
+			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
+			return new PrngineRandomWrapper(new MT19937_64Random(), seedGen);
+		}
+	},
+	PRNGXOR{
+		@Override
+		public Random createRNG(int modifier, BigInteger seed) throws Exception {
+			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
+			return new PrngineRandomWrapper(new XOR64ShiftRandom(), seedGen);
 		}
 	};
 	
