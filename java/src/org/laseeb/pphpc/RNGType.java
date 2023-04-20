@@ -50,19 +50,19 @@ import io.jenetics.prngine.MT19937_64Random;
 import io.jenetics.prngine.XOR64ShiftRandom;
 import io.jenetics.prngine.Seeds;
 
+import org.apache.commons.rng.UniformRandomProvider;
 import org.apache.commons.rng.simple.JDKRandomBridge;
 import org.apache.commons.rng.simple.RandomSource;
 import org.apache.commons.rng.simple.internal.*;
 
-
 /**
- * Enum representing the random number generators present in the Uncommons
- * Math library.
+ * Enum representing the random number generators included in the project
  * 
  * @author Nuno Fachada
+ * @author Ana Pinha
  */
 public enum RNGType {
-	
+
 	/** @see org.uncommons.maths.random.AESCounterRNG */
 	AES {
 		@Override
@@ -78,7 +78,7 @@ public enum RNGType {
 			SeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
 			return new CellularAutomatonRNG(seedGen);
 		}
-	}, 
+	},
 	/** @see org.uncommons.maths.random.CMWC4096RNG */
 	CMWC {
 		@Override
@@ -86,7 +86,7 @@ public enum RNGType {
 			SeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
 			return new CMWC4096RNG(seedGen);
 		}
-	}, 
+	},
 	/** @see org.uncommons.maths.random.JavaRNG */
 	JAVA {
 		@Override
@@ -94,7 +94,7 @@ public enum RNGType {
 			SeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
 			return new JavaRNG(seedGen);
 		}
-	}, 
+	},
 	/** @see org.uncommons.maths.random.MersenneTwisterRNG */
 	MT {
 		@Override
@@ -175,36 +175,71 @@ public enum RNGType {
 			return new XorShiftRandom(seedGen);
 		}
 	},
-	PRNGKISS{
+	PRNGKISS {
 		@Override
 		public Random createRNG(int modifier, BigInteger seed) throws Exception {
 			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
 			return new PrngineRandomWrapper(new KISS64Random(), seedGen);
-			
+
 		}
 	},
-	PRNGLCG{
+	PRNGLCG {
 		@Override
 		public Random createRNG(int modifier, BigInteger seed) throws Exception {
 			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
 			return new PrngineRandomWrapper(new LCG64ShiftRandom(), seedGen);
 		}
 	},
-	PRNGMT{
+	PRNGMT {
 		@Override
 		public Random createRNG(int modifier, BigInteger seed) throws Exception {
 			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
 			return new PrngineRandomWrapper(new MT19937_64Random(), seedGen);
 		}
 	},
-	PRNGXOR{
+	PRNGXOR {
 		@Override
 		public Random createRNG(int modifier, BigInteger seed) throws Exception {
 			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
 			return new PrngineRandomWrapper(new XOR64ShiftRandom(), seedGen);
 		}
+	},
+	ACXORSHIFT {
+		@Override
+		public Random createRNG(int modifier, BigInteger seed) throws Exception {
+			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
+			return new ApacheCommonsRNGWrapper(RandomSource.XOR_SHIFT_1024_S_PHI.create(), seedGen);
+		}
+	},
+	ACMT64 {
+		@Override
+		public Random createRNG(int modifier, BigInteger seed) throws Exception {
+			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
+			return new ApacheCommonsRNGWrapper(RandomSource.MT_64.create(), seedGen);
+		}
+	},
+	ACMT {
+		@Override
+		public Random createRNG(int modifier, BigInteger seed) throws Exception {
+			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
+			return new ApacheCommonsRNGWrapper(RandomSource.MT.create(), seedGen);
+		}
+	},
+	ACWELL {
+		@Override
+		public Random createRNG(int modifier, BigInteger seed) throws Exception {
+			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
+			return new ApacheCommonsRNGWrapper(RandomSource.WELL_1024_A.create(), seedGen);
+		}
+	},
+	ACSPLIT {
+		@Override
+		public Random createRNG(int modifier, BigInteger seed) throws Exception {
+			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
+			return new ApacheCommonsRNGWrapper(RandomSource.SPLIT_MIX_64.create(), seedGen);
+		}
 	};
-	
+
 	/**
 	 * Create the random number generator associated with this RNG type.
 	 * 

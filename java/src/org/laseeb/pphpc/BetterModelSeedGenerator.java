@@ -36,14 +36,15 @@ import io.github.pr0methean.betterrandom.seed.SeedGenerator;
 import io.github.pr0methean.betterrandom.seed.SeedException;
 
 /**
- * A deterministic seed generator for the Uncommons Maths random number 
- * generators. Can produce seeds of any size using a base BigInteger seed.
+ * A deterministic seed generator for the Better Random RNGs.
+ * Can produce seeds of any size using a base BigInteger seed.
  * Also supports generating different seeds for different threads based on
  * the same base seed, as to allow for deterministic parallel streams of
  * pseudo-random numbers.
  * 
  * @author Nuno Fachada
  * @author Ana Pinha
+ * 
  */
 public class BetterModelSeedGenerator implements SeedGenerator {
 	
