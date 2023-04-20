@@ -10,3 +10,4 @@ stats*.txt
 *.log
 *.jar
 java/src/org/module-info.java
+java/runscripts.sh
