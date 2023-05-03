@@ -11,3 +11,4 @@ stats*.txt
 *.jar
 java/src/org/module-info.java
 java/runscripts.sh
+simulations/
