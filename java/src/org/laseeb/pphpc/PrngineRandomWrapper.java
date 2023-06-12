@@ -43,26 +43,21 @@ import io.jenetics.prngine.XOR64ShiftRandom;
  */
 public class PrngineRandomWrapper extends Random {
     private Object randomGen;
-    private ModelSeedGenerator seedGen;
 
-    public PrngineRandomWrapper(KISS64Random randomGen, ModelSeedGenerator seedGen) {
+    public PrngineRandomWrapper(KISS64Random randomGen) {
         this.randomGen = randomGen;
-        this.seedGen = seedGen;
     }
     
-    public PrngineRandomWrapper(LCG64ShiftRandom randomGen, ModelSeedGenerator seedGen) {
+    public PrngineRandomWrapper(LCG64ShiftRandom randomGen) {
         this.randomGen = randomGen;
-        this.seedGen = seedGen;
     }
 
-    public PrngineRandomWrapper(MT19937_64Random randomGen, ModelSeedGenerator seedGen) {
+    public PrngineRandomWrapper(MT19937_64Random randomGen) {
         this.randomGen = randomGen;
-        this.seedGen = seedGen;
     }
     
-    public PrngineRandomWrapper(XOR64ShiftRandom randomGen, ModelSeedGenerator seedGen) {
+    public PrngineRandomWrapper(XOR64ShiftRandom randomGen) {
         this.randomGen = randomGen;
-        this.seedGen = seedGen;
     }
     
 

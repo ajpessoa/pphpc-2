@@ -179,7 +179,7 @@ public enum RNGType {
 		@Override
 		public Random createRNG(int modifier, BigInteger seed) throws Exception {
 			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
-			return new PrngineRandomWrapper(new KISS64Random(), seedGen);
+			return new PrngineRandomWrapper(new KISS64Random(seedGen.generateSeed(16)));
 
 		}
 	},
@@ -187,56 +187,56 @@ public enum RNGType {
 		@Override
 		public Random createRNG(int modifier, BigInteger seed) throws Exception {
 			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
-			return new PrngineRandomWrapper(new LCG64ShiftRandom(), seedGen);
+			return new PrngineRandomWrapper(new LCG64ShiftRandom());
 		}
 	},
 	PRNGMT {
 		@Override
 		public Random createRNG(int modifier, BigInteger seed) throws Exception {
 			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
-			return new PrngineRandomWrapper(new MT19937_64Random(), seedGen);
+			return new PrngineRandomWrapper(new MT19937_64Random());
 		}
 	},
 	PRNGXOR {
 		@Override
 		public Random createRNG(int modifier, BigInteger seed) throws Exception {
 			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
-			return new PrngineRandomWrapper(new XOR64ShiftRandom(), seedGen);
+			return new PrngineRandomWrapper(new XOR64ShiftRandom());
 		}
 	},
 	ACXORSHIFT {
 		@Override
 		public Random createRNG(int modifier, BigInteger seed) throws Exception {
 			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
-			return new ApacheCommonsRNGWrapper(RandomSource.XOR_SHIFT_1024_S_PHI.create(), seedGen);
+			return new ApacheCommonsRNGWrapper(RandomSource.XOR_SHIFT_1024_S_PHI.create(seedGen.generateSeed(16)));
 		}
 	},
 	ACMT64 {
 		@Override
 		public Random createRNG(int modifier, BigInteger seed) throws Exception {
 			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
-			return new ApacheCommonsRNGWrapper(RandomSource.MT_64.create(), seedGen);
+			return new ApacheCommonsRNGWrapper(RandomSource.MT_64.create(seedGen.generateSeed(16)));
 		}
 	},
 	ACMT {
 		@Override
 		public Random createRNG(int modifier, BigInteger seed) throws Exception {
 			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
-			return new ApacheCommonsRNGWrapper(RandomSource.MT.create(), seedGen);
+			return new ApacheCommonsRNGWrapper(RandomSource.MT.create(seedGen.generateSeed(16)));
 		}
 	},
 	ACWELL {
 		@Override
 		public Random createRNG(int modifier, BigInteger seed) throws Exception {
 			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
-			return new ApacheCommonsRNGWrapper(RandomSource.WELL_1024_A.create(), seedGen);
+			return new ApacheCommonsRNGWrapper(RandomSource.WELL_1024_A.create(seedGen.generateSeed(16)));
 		}
 	},
 	ACSPLIT {
 		@Override
 		public Random createRNG(int modifier, BigInteger seed) throws Exception {
 			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
-			return new ApacheCommonsRNGWrapper(RandomSource.SPLIT_MIX_64.create(), seedGen);
+			return new ApacheCommonsRNGWrapper(RandomSource.SPLIT_MIX_64.create(seedGen.generateSeed(16)));
 		}
 	};
 

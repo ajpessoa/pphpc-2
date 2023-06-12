@@ -131,7 +131,7 @@ public class PredPrey {
 			description = "Random number generator (AES, " + 
 					"CA, CMWC, JAVA, MT, RANDU, REALLYPOOR or XORSHIFT)", 
 			converter =  RNGTypeConverter.class)
-	private RNGType rngType = RNGType.MT;
+	private RNGType rngType = RNGType.MT; //TODO verify this
 	
 	/* Shuffle agents before they act? */
 	@Parameter(names = {"-u", "--no-shuffle"}, description = "Disable agent"

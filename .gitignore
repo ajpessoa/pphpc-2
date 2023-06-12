@@ -12,3 +12,7 @@ stats*.txt
 java/src/org/module-info.java
 java/runscripts.sh
 simulations/
+java/.idea/
+java/out/
+java/pphpc-2.iml
+run_sim.sh
