@@ -16,3 +16,5 @@ java/.idea/
 java/out/
 java/pphpc-2.iml
 run_sim.sh
+run_sim_test.sh
+times/

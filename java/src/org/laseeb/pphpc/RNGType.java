@@ -42,6 +42,7 @@ import io.github.pr0methean.betterrandom.prng.Pcg64Random;
 import io.jenetics.prngine.KISS64Random;
 import io.jenetics.prngine.LCG64ShiftRandom;
 
+import org.apache.commons.rng.JumpableUniformRandomProvider;
 import org.apache.commons.rng.SplittableUniformRandomProvider;
 import org.apache.commons.rng.simple.RandomSource;
 
@@ -109,8 +110,6 @@ public enum RNGType {
 			return new XORShiftRNG(seedGen);
 		}
 	},
-
-	
 	/** @see io.github.pr0methean.betterrandom.prng.Pcg128Random */
 	PCG128(false) {
 		@Override
@@ -122,7 +121,7 @@ public enum RNGType {
 	PCG64(false) {
 		@Override
 		public Random createRNG(SeedGenerator seedGen) throws Exception {
-			return new Pcg64Random(seedGen.generateSeed(16));
+			return new Pcg64Random(seedGen.generateSeed(8));
 		}
 	},
 
@@ -131,7 +130,7 @@ public enum RNGType {
 	KISS64(false) {
 		@Override
 		public Random createRNG(SeedGenerator seedGen) throws Exception {
-			return new PrngineRandomWrapper(new KISS64Random(seedGen.generateSeed(16)));
+			return new PrngineRandomWrapper(new KISS64Random(seedGen.generateSeed(32)));
 
 		}
 	},
@@ -151,8 +150,7 @@ public enum RNGType {
 		public synchronized Random createRNG(SeedGenerator seedGen) throws Exception {
 			if(!wasSplit()) {
 				splitRNG();
-				rng = new ApacheCommonsRNGWrapper((SplittableUniformRandomProvider) 
-						RandomSource.L64_X256_MIX.create(seedGen.generateSeed(16)));
+				rng = new ApacheCommonsRNGWrapper(RandomSource.L64_X256_MIX.create(seedGen.generateSeed(16)));
 				return rng;
 			} else {				
 				return rng.split();
@@ -164,11 +162,10 @@ public enum RNGType {
 	L128X256M(false) {
 		ApacheCommonsRNGWrapper rng;
 		@Override
-		public Random createRNG(SeedGenerator seedGen) throws Exception {
+		public synchronized Random createRNG(SeedGenerator seedGen) throws Exception {
 			if(!wasSplit()) {
 				splitRNG();
-				rng = new ApacheCommonsRNGWrapper((SplittableUniformRandomProvider) 
-						RandomSource.L128_X256_MIX.create(seedGen.generateSeed(16)));
+				rng = new ApacheCommonsRNGWrapper(RandomSource.L128_X256_MIX.create(seedGen.generateSeed(16)));
 				return rng;
 			} else {	
 				return rng.split();
@@ -176,18 +173,16 @@ public enum RNGType {
 		}
 	},
 	/** @see org.apache.commons.rng.core.source64.XoShiRo256PlusPlus */
-	XOSHIRO(false) { //FIXME not splittable but jumpable
+	XOSHIRO(false) {
 		ApacheCommonsRNGWrapper rng;
-
 		@Override
 		public synchronized Random createRNG(SeedGenerator seedGen) throws Exception {
 			if(!wasSplit()) {
 				splitRNG();
-				rng = new ApacheCommonsRNGWrapper((SplittableUniformRandomProvider) 
-						RandomSource.XO_SHI_RO_256_PP.create(seedGen.generateSeed(16)));
+				rng = new ApacheCommonsRNGWrapper(RandomSource.XO_SHI_RO_256_PP.create(seedGen.generateSeed(16)));
 				return rng;
 			} else {				
-				return rng.split();
+				return rng.jump();
 			}
 		}
 	},
@@ -199,11 +194,10 @@ public enum RNGType {
 		public synchronized Random createRNG(SeedGenerator seedGen) throws Exception {
 			if(!wasSplit()) {
 				splitRNG();
-				rng = new ApacheCommonsRNGWrapper((SplittableUniformRandomProvider) 
-						RandomSource.XO_RO_SHI_RO_128_PP.create(seedGen.generateSeed(16)));
+				rng = new ApacheCommonsRNGWrapper(RandomSource.XO_RO_SHI_RO_128_PP.create(seedGen.generateSeed(16)));
 				return rng;
 			} else {				
-				return rng.split();
+				return rng.jump();
 			}
 		}
 	}, 
@@ -211,8 +205,7 @@ public enum RNGType {
 	SPLIT(false) { // FOR SOME REASON THIS IS NOT SPLITTABLE
 		@Override
 		public Random createRNG(SeedGenerator seedGen) throws Exception {
-				return  new ApacheCommonsRNGWrapper((SplittableUniformRandomProvider) 
-						RandomSource.SPLIT_MIX_64.create(seedGen.generateSeed(16)));
+				return  new ApacheCommonsRNGWrapper(RandomSource.SPLIT_MIX_64.create(seedGen.generateSeed(16)));
 		}
 	};
 
