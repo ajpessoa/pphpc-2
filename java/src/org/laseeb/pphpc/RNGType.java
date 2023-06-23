@@ -26,7 +26,6 @@
 
 package org.laseeb.pphpc;
 
-import java.math.BigInteger;
 import java.util.Random;
 
 import org.uncommons.maths.random.AESCounterRNG;
@@ -37,23 +36,14 @@ import org.uncommons.maths.random.MersenneTwisterRNG;
 import org.uncommons.maths.random.SeedGenerator;
 import org.uncommons.maths.random.XORShiftRNG;
 
-import io.github.pr0methean.betterrandom.prng.AesCounterRandom;
-import io.github.pr0methean.betterrandom.prng.Cmwc4096Random;
-import io.github.pr0methean.betterrandom.prng.MersenneTwisterRandom;
 import io.github.pr0methean.betterrandom.prng.Pcg128Random;
 import io.github.pr0methean.betterrandom.prng.Pcg64Random;
-import io.github.pr0methean.betterrandom.prng.XorShiftRandom;
 
 import io.jenetics.prngine.KISS64Random;
 import io.jenetics.prngine.LCG64ShiftRandom;
-import io.jenetics.prngine.MT19937_64Random;
-import io.jenetics.prngine.XOR64ShiftRandom;
-import io.jenetics.prngine.Seeds;
 
-import org.apache.commons.rng.UniformRandomProvider;
-import org.apache.commons.rng.simple.JDKRandomBridge;
+import org.apache.commons.rng.SplittableUniformRandomProvider;
 import org.apache.commons.rng.simple.RandomSource;
-import org.apache.commons.rng.simple.internal.*;
 
 /**
  * Enum representing the random number generators included in the project
@@ -62,184 +52,186 @@ import org.apache.commons.rng.simple.internal.*;
  * @author Ana Pinha
  */
 public enum RNGType {
-
+	
 	/** @see org.uncommons.maths.random.AESCounterRNG */
-	AES {
+	AES(false) {
 		@Override
-		public Random createRNG(int modifier, BigInteger seed) throws Exception {
-			SeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
+		public Random createRNG(SeedGenerator seedGen) throws Exception {
 			return new AESCounterRNG(seedGen);
 		}
 	},
 	/** @see org.uncommons.maths.random.CellularAutomatonRNG */
-	CA {
+	CA(false) {
 		@Override
-		public Random createRNG(int modifier, BigInteger seed) throws Exception {
-			SeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
+		public Random createRNG(SeedGenerator seedGen) throws Exception {
 			return new CellularAutomatonRNG(seedGen);
 		}
 	},
 	/** @see org.uncommons.maths.random.CMWC4096RNG */
-	CMWC {
+	CMWC(false) {
 		@Override
-		public Random createRNG(int modifier, BigInteger seed) throws Exception {
-			SeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
+		public Random createRNG(SeedGenerator seedGen) throws Exception {
 			return new CMWC4096RNG(seedGen);
 		}
 	},
 	/** @see org.uncommons.maths.random.JavaRNG */
-	JAVA {
+	JAVA(false) {
 		@Override
-		public Random createRNG(int modifier, BigInteger seed) throws Exception {
-			SeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
+		public Random createRNG(SeedGenerator seedGen) throws Exception {
 			return new JavaRNG(seedGen);
 		}
 	},
 	/** @see org.uncommons.maths.random.MersenneTwisterRNG */
-	MT {
+	MT(false) {
 		@Override
-		public Random createRNG(int modifier, BigInteger seed) throws Exception {
-			SeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
+		public Random createRNG(SeedGenerator seedGen) throws Exception {
 			return new MersenneTwisterRNG(seedGen);
 		}
 	},
 	/** @see RanduRNG */
-	RANDU {
+	RANDU(false) {
 		@Override
-		public Random createRNG(int modifier, BigInteger seed) throws Exception {
-			SeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
+		public Random createRNG(SeedGenerator seedGen) throws Exception {
 			return new RanduRNG(seedGen);
 		}
 	},
 	/** @see ModMidSquareRNG */
-	MODMIDSQUARE {
+	MODMIDSQUARE(false) {
 		@Override
-		public Random createRNG(int modifier, BigInteger seed) throws Exception {
-			SeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
+		public Random createRNG(SeedGenerator seedGen) throws Exception {
 			return new ModMidSquareRNG(seedGen);
 		}
 	},
 	/** @see org.uncommons.maths.random.XORShiftRNG */
-	XORSHIFT {
+	XORSHIFT(false) {
 		@Override
-		public Random createRNG(int modifier, BigInteger seed) throws Exception {
-			SeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
+		public Random createRNG(SeedGenerator seedGen) throws Exception {
 			return new XORShiftRNG(seedGen);
 		}
 	},
-	/** @see io.github.pr0methean.betterrandom.prng.AesCounterRandom */
-	BETTERAES {
-		@Override
-		public Random createRNG(int modifier, BigInteger seed) throws Exception {
-			io.github.pr0methean.betterrandom.seed.SeedGenerator seedGen = new BetterModelSeedGenerator(modifier, seed);
-			return new AesCounterRandom(seedGen);
-		}
-	},
-	/** @see io.github.pr0methean.betterrandom.prng.Cmwc4096Random */
-	BETTERCMWC {
-		@Override
-		public Random createRNG(int modifier, BigInteger seed) throws Exception {
-			io.github.pr0methean.betterrandom.seed.SeedGenerator seedGen = new BetterModelSeedGenerator(modifier, seed);
-			return new Cmwc4096Random(seedGen);
-		}
-	},
-	/** @see io.github.pr0methean.betterrandom.prng.MersenneTwisterRandom */
-	BETTERMT {
-		@Override
-		public Random createRNG(int modifier, BigInteger seed) throws Exception {
-			io.github.pr0methean.betterrandom.seed.SeedGenerator seedGen = new BetterModelSeedGenerator(modifier, seed);
-			return new MersenneTwisterRandom(seedGen);
-		}
-	},
+
+	
 	/** @see io.github.pr0methean.betterrandom.prng.Pcg128Random */
-	PCG128 {
+	PCG128(false) {
 		@Override
-		public Random createRNG(int modifier, BigInteger seed) throws Exception {
-			io.github.pr0methean.betterrandom.seed.SeedGenerator seedGen = new BetterModelSeedGenerator(modifier, seed);
-			return new Pcg128Random(seedGen);
+		public Random createRNG(SeedGenerator seedGen) throws Exception {
+			return new Pcg128Random(seedGen.generateSeed(16));
 		}
 	},
 	/** @see io.github.pr0methean.betterrandom.prng.Pcg64Random */
-	PCG64 {
+	PCG64(false) {
 		@Override
-		public Random createRNG(int modifier, BigInteger seed) throws Exception {
-			io.github.pr0methean.betterrandom.seed.SeedGenerator seedGen = new BetterModelSeedGenerator(modifier, seed);
-			return new Pcg64Random(seedGen);
+		public Random createRNG(SeedGenerator seedGen) throws Exception {
+			return new Pcg64Random(seedGen.generateSeed(16));
 		}
 	},
-	/** @see io.github.pr0methean.betterrandom.prng.XorShiftRandom */
-	BETTERXOR {
+
+	
+	/** @see io.jenetics.prngine.KISS64Random */
+	KISS64(false) {
 		@Override
-		public Random createRNG(int modifier, BigInteger seed) throws Exception {
-			io.github.pr0methean.betterrandom.seed.SeedGenerator seedGen = new BetterModelSeedGenerator(modifier, seed);
-			return new XorShiftRandom(seedGen);
-		}
-	},
-	PRNGKISS {
-		@Override
-		public Random createRNG(int modifier, BigInteger seed) throws Exception {
-			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
+		public Random createRNG(SeedGenerator seedGen) throws Exception {
 			return new PrngineRandomWrapper(new KISS64Random(seedGen.generateSeed(16)));
 
 		}
 	},
-	PRNGLCG {
+	/** @see io.jenetics.prngine.LCG64ShiftRandom */
+	LCG64(false) {
 		@Override
-		public Random createRNG(int modifier, BigInteger seed) throws Exception {
-			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
+		public Random createRNG(SeedGenerator seedGen) throws Exception {
 			return new PrngineRandomWrapper(new LCG64ShiftRandom());
 		}
 	},
-	PRNGMT {
+	
+	
+	/** @see org.apache.commons.rng.core.source64.L64X256Mix */
+	L64X256M(false) {
+		ApacheCommonsRNGWrapper rng;
 		@Override
-		public Random createRNG(int modifier, BigInteger seed) throws Exception {
-			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
-			return new PrngineRandomWrapper(new MT19937_64Random());
+		public synchronized Random createRNG(SeedGenerator seedGen) throws Exception {
+			if(!wasSplit()) {
+				splitRNG();
+				rng = new ApacheCommonsRNGWrapper((SplittableUniformRandomProvider) 
+						RandomSource.L64_X256_MIX.create(seedGen.generateSeed(16)));
+				return rng;
+			} else {				
+				return rng.split();
+				
+			}
 		}
 	},
-	PRNGXOR {
+	/** @see org.apache.commons.rng.core.source64.L128X256Mix */
+	L128X256M(false) {
+		ApacheCommonsRNGWrapper rng;
 		@Override
-		public Random createRNG(int modifier, BigInteger seed) throws Exception {
-			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
-			return new PrngineRandomWrapper(new XOR64ShiftRandom());
+		public Random createRNG(SeedGenerator seedGen) throws Exception {
+			if(!wasSplit()) {
+				splitRNG();
+				rng = new ApacheCommonsRNGWrapper((SplittableUniformRandomProvider) 
+						RandomSource.L128_X256_MIX.create(seedGen.generateSeed(16)));
+				return rng;
+			} else {	
+				return rng.split();
+			}
 		}
 	},
-	ACXORSHIFT {
+	/** @see org.apache.commons.rng.core.source64.XoShiRo256PlusPlus */
+	XOSHIRO(false) { //FIXME not splittable but jumpable
+		ApacheCommonsRNGWrapper rng;
+
 		@Override
-		public Random createRNG(int modifier, BigInteger seed) throws Exception {
-			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
-			return new ApacheCommonsRNGWrapper(RandomSource.XOR_SHIFT_1024_S_PHI.create(seedGen.generateSeed(16)));
+		public synchronized Random createRNG(SeedGenerator seedGen) throws Exception {
+			if(!wasSplit()) {
+				splitRNG();
+				rng = new ApacheCommonsRNGWrapper((SplittableUniformRandomProvider) 
+						RandomSource.XO_SHI_RO_256_PP.create(seedGen.generateSeed(16)));
+				return rng;
+			} else {				
+				return rng.split();
+			}
 		}
 	},
-	ACMT64 {
+	/** @see org.apache.commons.rng.core.source64.XoRoShiRo128StarStar */
+	XOROSHIRO(false) { //FIXME not splittable but jumpable
+		ApacheCommonsRNGWrapper rng;
+
 		@Override
-		public Random createRNG(int modifier, BigInteger seed) throws Exception {
-			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
-			return new ApacheCommonsRNGWrapper(RandomSource.MT_64.create(seedGen.generateSeed(16)));
+		public synchronized Random createRNG(SeedGenerator seedGen) throws Exception {
+			if(!wasSplit()) {
+				splitRNG();
+				rng = new ApacheCommonsRNGWrapper((SplittableUniformRandomProvider) 
+						RandomSource.XO_RO_SHI_RO_128_PP.create(seedGen.generateSeed(16)));
+				return rng;
+			} else {				
+				return rng.split();
+			}
 		}
-	},
-	ACMT {
+	}, 
+	/** @see org.apache.commons.rng.core.source64.SplitMix64 */
+	SPLIT(false) { // FOR SOME REASON THIS IS NOT SPLITTABLE
 		@Override
-		public Random createRNG(int modifier, BigInteger seed) throws Exception {
-			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
-			return new ApacheCommonsRNGWrapper(RandomSource.MT.create(seedGen.generateSeed(16)));
-		}
-	},
-	ACWELL {
-		@Override
-		public Random createRNG(int modifier, BigInteger seed) throws Exception {
-			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
-			return new ApacheCommonsRNGWrapper(RandomSource.WELL_1024_A.create(seedGen.generateSeed(16)));
-		}
-	},
-	ACSPLIT {
-		@Override
-		public Random createRNG(int modifier, BigInteger seed) throws Exception {
-			ModelSeedGenerator seedGen = new ModelSeedGenerator(modifier, seed);
-			return new ApacheCommonsRNGWrapper(RandomSource.SPLIT_MIX_64.create(seedGen.generateSeed(16)));
+		public Random createRNG(SeedGenerator seedGen) throws Exception {
+				return  new ApacheCommonsRNGWrapper((SplittableUniformRandomProvider) 
+						RandomSource.SPLIT_MIX_64.create(seedGen.generateSeed(16)));
 		}
 	};
 
+
+	
+	private boolean split;
+	
+	private RNGType(boolean split) {
+        this.split = split;
+    }
+	
+	public boolean wasSplit() {
+        return split;
+    }
+	
+	public void splitRNG () {
+        this.split = true;
+    }
+	
 	/**
 	 * Create the random number generator associated with this RNG type.
 	 * 
@@ -247,6 +239,6 @@ public enum RNGType {
 	 * @return A random number generator associated with this RNG type.
 	 * @throws Exception If some problem occurs while creating the RNG.
 	 */
-	public abstract Random createRNG(int modifier, BigInteger seed) throws Exception;
+	public abstract Random createRNG(SeedGenerator seedGen) throws Exception;
 
 }

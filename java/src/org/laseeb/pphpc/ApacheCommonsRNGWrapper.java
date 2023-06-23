@@ -27,6 +27,7 @@
 package org.laseeb.pphpc;
 
 import org.apache.commons.rng.RestorableUniformRandomProvider;
+import org.apache.commons.rng.SplittableUniformRandomProvider;
 import org.apache.commons.rng.UniformRandomProvider;
 import org.apache.commons.rng.simple.RandomSource;
 import org.uncommons.maths.random.SeedException;
@@ -40,11 +41,11 @@ import java.util.Random;
  * 
  */
 public class ApacheCommonsRNGWrapper extends Random {
-    private UniformRandomProvider rng;
+    private SplittableUniformRandomProvider rng;
 
 
 
-    public ApacheCommonsRNGWrapper(RestorableUniformRandomProvider rng) {
+    public ApacheCommonsRNGWrapper(SplittableUniformRandomProvider rng) {
 		this.rng = rng;
 	}
 
@@ -81,5 +82,9 @@ public class ApacheCommonsRNGWrapper extends Random {
     @Override
     public long nextLong() {
         return rng.nextLong();
+    }
+    
+    public ApacheCommonsRNGWrapper split() {
+    	return new ApacheCommonsRNGWrapper(rng.split());
     }
 }

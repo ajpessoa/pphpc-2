@@ -300,11 +300,10 @@ public class Model implements IModel {
 	public Random createRNG(int modifier) throws Exception {
 		
 		/* Instantiate the seed generator for the PPHPC model. */
-		//SeedGenerator seedGen = new ModelSeedGenerator(modifier, this.seed);
+		SeedGenerator seedGen = new ModelSeedGenerator(modifier, this.seed);
 		
 		/* Create and return the random number generator. */
-		return rngType.createRNG(modifier, this.seed);
-		
+		return rngType.createRNG(seedGen);
 	}
 	
 	/**
