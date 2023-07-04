@@ -27,6 +27,10 @@
 package org.laseeb.pphpc;
 
 import java.util.Random;
+import java.util.SplittableRandom;
+import java.util.random.RandomGenerator;
+import java.util.random.RandomGenerator.SplittableGenerator;
+import java.util.random.RandomGeneratorFactory;
 
 import org.uncommons.maths.random.AESCounterRNG;
 import org.uncommons.maths.random.CMWC4096RNG;
@@ -42,8 +46,6 @@ import io.github.pr0methean.betterrandom.prng.Pcg64Random;
 import io.jenetics.prngine.KISS64Random;
 import io.jenetics.prngine.LCG64ShiftRandom;
 
-import org.apache.commons.rng.JumpableUniformRandomProvider;
-import org.apache.commons.rng.SplittableUniformRandomProvider;
 import org.apache.commons.rng.simple.RandomSource;
 
 /**
@@ -80,6 +82,21 @@ public enum RNGType {
 		@Override
 		public Random createRNG(SeedGenerator seedGen) throws Exception {
 			return new JavaRNG(seedGen);
+		}
+	},
+	/** @see SplittableRandom*/
+	JAVASPLIT(false) {
+		JavaRandomWrapper rng;
+		@Override
+		public synchronized Random createRNG(SeedGenerator seedGen) throws Exception {
+			if(!wasSplit()) {
+				splitRNG();
+					rng = new JavaRandomWrapper(
+							RandomGeneratorFactory.of("SplittableRandom").create(seedGen.generateSeed(16)));
+					return rng;
+			} else {				
+				return rng.split();
+			}
 		}
 	},
 	/** @see org.uncommons.maths.random.MersenneTwisterRNG */
@@ -154,7 +171,6 @@ public enum RNGType {
 				return rng;
 			} else {				
 				return rng.split();
-				
 			}
 		}
 	},
@@ -187,7 +203,7 @@ public enum RNGType {
 		}
 	},
 	/** @see org.apache.commons.rng.core.source64.XoRoShiRo128StarStar */
-	XOROSHIRO(false) { //FIXME not splittable but jumpable
+	XOROSHIRO(false) {
 		ApacheCommonsRNGWrapper rng;
 
 		@Override
@@ -202,7 +218,7 @@ public enum RNGType {
 		}
 	}, 
 	/** @see org.apache.commons.rng.core.source64.SplitMix64 */
-	SPLIT(false) { // FOR SOME REASON THIS IS NOT SPLITTABLE
+	SPLIT(false) {
 		@Override
 		public Random createRNG(SeedGenerator seedGen) throws Exception {
 				return  new ApacheCommonsRNGWrapper(RandomSource.SPLIT_MIX_64.create(seedGen.generateSeed(16)));
