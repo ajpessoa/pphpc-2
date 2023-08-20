@@ -160,14 +160,14 @@ public enum RNGType {
 	},
 	
 	
-	/** @see org.apache.commons.rng.core.source64.L64X256Mix */
-	L64X256M(false) {
+	/** @see org.apache.commons.rng.core.source64.L64X128Mix */
+	L64X128M(false) {
 		ApacheCommonsRNGWrapper rng;
 		@Override
 		public synchronized Random createRNG(SeedGenerator seedGen) throws Exception {
 			if(!wasSplit()) {
 				splitRNG();
-				rng = new ApacheCommonsRNGWrapper(RandomSource.L64_X256_MIX.create(seedGen.generateSeed(16)));
+				rng = new ApacheCommonsRNGWrapper(RandomSource.L64_X128_MIX.create(seedGen.generateSeed(16)));
 				return rng;
 			} else {				
 				return rng.split();
@@ -202,7 +202,7 @@ public enum RNGType {
 			}
 		}
 	},
-	/** @see org.apache.commons.rng.core.source64.XoRoShiRo128StarStar */
+	/** @see org.apache.commons.rng.core.source64.XoRoShiRo128PlusPlus */
 	XOROSHIRO(false) {
 		ApacheCommonsRNGWrapper rng;
 
